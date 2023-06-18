@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use App\Traits\HasCan;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -17,6 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use Hascan;
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +29,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'eth_address', // Tambahkan eth_address ke fillable
     ];
 
     /**
@@ -57,5 +60,22 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $appends = [
         'profile_photo_url',
+        'can',
     ];
+
+    public function getCreatedAtAttribute($value)
+    {
+        return now()->parse($value)->timezone(config('app.timezone'))->format('d/m/Y H:i:s');
+    }
+
+    public function getUpdatedAtAttribute($value)
+    {
+        return now()->parse($value)->timezone(config('app.timezone'))->diffForHumans();
+    }
+
+    public function checkRole($role)
+    {
+        return $this->role == $role;
+    }
+
 }

@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +35,14 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::resource('users', UserController::class);
+});
+
 Route::post('login-web3', \App\Actions\LoginUsingWeb3::class);
+
+Route::resource('users', UserController::class);
+
+
+
+
