@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "@inertiajs/inertia-vue3": "^0.6.0",
+        "lodash": "^4.17.21",
         "vue-router": "^4.2.2",
         "web3": "^1.9.0",
         "ziggy": "^2.4.0",

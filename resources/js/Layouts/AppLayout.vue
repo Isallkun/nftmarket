@@ -59,13 +59,19 @@ const logout = () => {
                   Dashboard
                 </NavLink>
                 <NavLink
+                  :href="route('nfts.index')"
+                  :active="route().current('nfts.*')"
+                  v-if="$page.props.permission.users.viewAny"
+                >
+                  NFT
+                </NavLink>
+                <NavLink
                   :href="route('users.index')"
                   :active="route().current('users.*')"
                   v-if="$page.props.permission.users.viewAny"
                 >
                   Users
                 </NavLink>
-                <NavLink href="#"> NFT </NavLink>
                 <NavLink href="#"> Transaction </NavLink>
               </div>
             </div>
