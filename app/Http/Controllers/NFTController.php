@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\NFT;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class NFTController extends Controller
 {
     public function index()
     {
-        $nfts = NFT::all(); // Ambil semua data NFT dari model
-
+        $nfts = NFT::all();
         return Inertia::render('NFT/Index', compact('nfts'));
     }
 
@@ -26,27 +26,36 @@ class NFTController extends Controller
         $request->validate([
             'name' => 'required',
             'collection' => 'required',
-            'price' => 'required',
-            'quantity' => 'required',
-            'description' => 'nullable',
-            'external_url' => 'nullable',
-            'author' => 'nullable',
-            'image' => 'nullable',
+            'price' => 'required|numeric',
+            'quantity' => 'required|integer',
+            'description' => 'required',
+            'external_url' => 'nullable|url',
+            'author' => 'required',
+            'image' => 'required|image',
         ]);
 
-        NFT::create($request->only(
-            'name',
-            'collection',
-            'price',
-            'quantity',
-            'description',
-            'external_url',
-            'author',
-            'image'
-        ));
+        try {
+            $imageName = $request->file('image')->getClientOriginalName();
+            $imagePath = $request->file('image')->storeAs('public', $imageName);
+            $imageUrl = Storage::url($imagePath);
 
-        return redirect()->route('nfts.index')->with('success', 'NFT created successfully.');
+            NFT::create([
+                'name' => $request->input('name'),
+                'collection' => $request->input('collection'),
+                'price' => $request->input('price'),
+                'quantity' => $request->input('quantity'),
+                'description' => $request->input('description'),
+                'external_url' => $request->input('external_url'),
+                'author' => $request->input('author'),
+                'image' => $imageName,
+            ]);
+
+            return redirect()->route('nfts.index')->with('success', 'NFT berhasil dibuat.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
+
 
     public function show(NFT $nft)
     {
@@ -72,17 +81,7 @@ class NFTController extends Controller
             'image' => 'nullable',
         ]);
 
-        $nft->update($request->only(
-            'name',
-            'collection',
-            'price',
-            'quantity',
-            'description',
-            'external_url',
-            'author',
-            'image'
-        ));
-
+        $nft->update($request->only('name', 'collection', 'price', 'quantity', 'description'));
         return back()->with('success', 'NFT updated successfully.');
     }
 

@@ -8,10 +8,10 @@
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <FormSection @submitted="createUser">
-          <template #title> Create User Profile </template>
+        <FormSection @submitted="createNFT">
+          <template #title> Create NFT </template>
 
-          <template #description> Create User Profile. </template>
+          <template #description> Create NFT. </template>
 
           <template #form>
             <!-- Name -->
@@ -27,44 +27,101 @@
               <InputError :message="form.errors.name" class="mt-2" />
             </div>
 
-            <!-- Email -->
+            <!-- Collection -->
             <div class="col-span-6 sm:col-span-4">
-              <InputLabel for="email" value="Email" />
+              <InputLabel for="collection" value="Collection" />
               <TextInput
-                id="email"
-                v-model="form.email"
-                type="email"
-                class="mt-1 block w-full"
-                autocomplete="username"
-              />
-              <InputError :message="form.errors.email" class="mt-2" />
-            </div>
-
-            <!-- Role -->
-            <div class="col-span-6 sm:col-span-4">
-              <InputLabel for="role" value="Role" />
-              <SelectInput
-                id="role"
-                v-model="form.role"
-                class="mt-1 block w-full"
-              >
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
-              </SelectInput>
-              <InputError :message="form.errors.role" class="mt-2" />
-            </div>
-
-            <!-- Address -->
-            <div class="col-span-6 sm:col-span-4">
-              <InputLabel for="eth_address" value="Wallet Address" />
-              <TextInput
-                id="eth_address"
-                v-model="form.eth_address"
+                id="collection"
+                v-model="form.collection"
                 type="text"
                 class="mt-1 block w-full"
                 autocomplete="off"
               />
-              <InputError :message="form.errors.eth_address" class="mt-2" />
+              <InputError :message="form.errors.collection" class="mt-2" />
+            </div>
+
+            <!-- Price -->
+            <div class="col-span-6 sm:col-span-4">
+              <InputLabel for="price" value="Price" />
+              <TextInput
+                id="price"
+                v-model="form.price"
+                type="text"
+                class="mt-1 block w-full"
+                autocomplete="off"
+              />
+              <InputError :message="form.errors.price" class="mt-2" />
+            </div>
+
+            <!-- Quantity -->
+            <div class="col-span-6 sm:col-span-4">
+              <InputLabel for="quantity" value="Quantity" />
+              <TextInput
+                id="quantity"
+                v-model="form.quantity"
+                type="text"
+                class="mt-1 block w-full"
+                autocomplete="off"
+              />
+              <InputError :message="form.errors.quantity" class="mt-2" />
+            </div>
+
+            <!-- Description -->
+            <div class="col-span-6 sm:col-span-4">
+              <InputLabel for="description" value="Description" />
+              <TextInput
+                id="description"
+                v-model="form.description"
+                type="text"
+                class="mt-1 block w-full"
+                autocomplete="off"
+              />
+              <InputError :message="form.errors.description" class="mt-2" />
+            </div>
+
+            <!-- External URL -->
+            <div class="col-span-6 sm:col-span-4">
+              <InputLabel for="external_url" value="External Link" />
+              <TextInput
+                id="external_url"
+                v-model="form.external_url"
+                type="text"
+                class="mt-1 block w-full"
+                autocomplete="off"
+              />
+              <InputError :message="form.errors.external_url" class="mt-2" />
+            </div>
+
+            <!-- Author -->
+            <div class="col-span-6 sm:col-span-4">
+              <InputLabel for="author" value="Author" />
+              <TextInput
+                id="author"
+                v-model="form.author"
+                type="text"
+                class="mt-1 block w-full"
+                autocomplete="off"
+              />
+              <InputError :message="form.errors.author" class="mt-2" />
+            </div>
+
+            <!-- Image -->
+            <div class="col-span-6 sm:col-span-4">
+              <InputLabel for="image" value="Image" />
+              <input
+                id="image"
+                type="file"
+                @input="handleImageUpload"
+                class="mt-1 block w-full"
+              />
+              <!--<TextInput
+                id="image"
+                v-model="form.image"
+                type="text"
+                class="mt-1 block w-full"
+                autocomplete="off"
+              />-->
+              <InputError :message="form.errors.image" class="mt-2" />
             </div>
           </template>
 
@@ -88,15 +145,13 @@
 
 <script>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { Link, useForm } from "@inertiajs/inertia-vue3";
+import { Link, useForm, usePage, router } from "@inertiajs/inertia-vue3";
 import ActionMessage from "@/Components/ActionMessage.vue";
 import FormSection from "@/Components/FormSection.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import SelectInput from "@/Components/SelectInput.vue";
-import { usePage } from "@inertiajs/inertia-vue3";
 
 export default {
   components: {
@@ -108,33 +163,32 @@ export default {
     PrimaryButton,
     TextInput,
     ActionMessage,
-    SelectInput,
   },
 
   setup() {
     const form = useForm({
-      _method: "POST",
       name: "",
-      email: "",
-      role: "",
-      eth_address: "",
+      collection: "",
+      price: "",
+      quantity: "",
+      description: "",
+      external_url: "",
+      author: "",
+      image: null,
     });
 
     const { $inertia } = usePage();
 
-    const createUser = () => {
-      form
-        .post(route("users.store"))
-        .then(() => {
-          // Reload the current page after successful submission
-          return this.$inertia.reload();
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+    const createNFT = () => {
+      form.post(route("nfts.store"));
     };
 
-    return { form, createUser };
+    const handleImageUpload = (event) => {
+      const file = event.target.files[0];
+      form.image = file;
+    };
+
+    return { form, createNFT, handleImageUpload };
   },
 };
 </script>

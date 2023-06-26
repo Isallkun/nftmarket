@@ -39,22 +39,3 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 });
 
 Route::post('login-web3', \App\Actions\LoginUsingWeb3::class);
-
-Route::get('/nfts/{id}', function ($id) {
-    $nft = NFT::find($id);
-
-    // Memeriksa apakah NFT ditemukan
-    if (!$nft) {
-        return response()->json(['message' => 'NFT not found'], 404);
-    }
-
-    // Memeriksa apakah pengguna saat ini adalah pemilik NFT
-    if ($nft->user_id !== Auth::id()) {
-        return response()->json(['message' => 'Unauthorized'], 401);
-    }
-
-    // Pengguna diizinkan untuk melihat NFT mereka
-    return response()->json($nft);
-})->middleware('auth:sanctum');
-
-Route::delete('/api/nfts/{id}', [NFTController::class, 'destroy']);

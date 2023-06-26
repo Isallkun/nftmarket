@@ -8,12 +8,10 @@
 
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <FormSection @submitted="updateProfileInformation">
-          <template #title> Profile Information </template>
+        <FormSection @submitted="updateNFTInformation">
+          <template #title> NFT Information </template>
 
-          <template #description>
-            Update your account's profile information and email address.
-          </template>
+          <template #description> Update your NFT's information. </template>
 
           <template #form>
             <!-- Name -->
@@ -29,29 +27,56 @@
               <InputError :message="form.errors.name" class="mt-2" />
             </div>
 
-            <!-- Email -->
+            <!-- Collection -->
             <div class="col-span-6 sm:col-span-4">
-              <InputLabel for="email" value="Email" />
+              <InputLabel for="collection" value="Collection" />
               <TextInput
-                id="email"
-                v-model="form.email"
-                type="email"
-                class="mt-1 block w-full"
-                autocomplete="username"
-              />
-              <InputError :message="form.errors.email" class="mt-2" />
-            </div>
-            <!-- Address -->
-            <div class="col-span-6 sm:col-span-4">
-              <InputLabel for="eth_address" value="Wallet Address" />
-              <TextInput
-                id="eth_address"
-                v-model="form.eth_address"
+                id="collection"
+                v-model="form.collection"
                 type="text"
                 class="mt-1 block w-full"
                 autocomplete="off"
               />
-              <InputError :message="form.errors.eth_address" class="mt-2" />
+              <InputError :message="form.errors.collection" class="mt-2" />
+            </div>
+
+            <!-- Price -->
+            <div class="col-span-6 sm:col-span-4">
+              <InputLabel for="price" value="Price" />
+              <TextInput
+                id="price"
+                v-model="form.price"
+                type="number"
+                class="mt-1 block w-full"
+                autocomplete="off"
+              />
+              <InputError :message="form.errors.price" class="mt-2" />
+            </div>
+
+            <!-- Quantity -->
+            <div class="col-span-6 sm:col-span-4">
+              <InputLabel for="quantity" value="Quantity" />
+              <TextInput
+                id="quantity"
+                v-model="form.quantity"
+                type="number"
+                class="mt-1 block w-full"
+                autocomplete="off"
+              />
+              <InputError :message="form.errors.quantity" class="mt-2" />
+            </div>
+
+            <!-- Description -->
+            <div class="col-span-6 sm:col-span-4">
+              <InputLabel for="description" value="Description" />
+              <TextInput
+                id="description"
+                v-model="form.description"
+                type="text"
+                class="mt-1 block w-full"
+                autocomplete="off"
+              />
+              <InputError :message="form.errors.description" class="mt-2" />
             </div>
           </template>
 
@@ -97,23 +122,25 @@ export default {
     ActionMessage,
   },
 
-  props: ["user"],
+  props: ["nft"],
 
   setup(props) {
     const form = useForm({
       _method: "PUT",
-      name: props.user.name,
-      email: props.user.email,
-      eth_address: props.user.eth_address,
+      name: props.nft.name,
+      collection: props.nft.collection,
+      description: props.nft.description,
+      price: props.nft.price,
+      quantity: props.nft.quantity,
     });
 
-    const updateProfileInformation = () => {
-      form.post(route("users.update", props.user.id), {
+    const updateNFTInformation = () => {
+      form.post(route("nfts.update", props.nft.id), {
         preserveScroll: true,
       });
     };
 
-    return { form, updateProfileInformation };
+    return { form, updateNFTInformation };
   },
 };
 </script>
