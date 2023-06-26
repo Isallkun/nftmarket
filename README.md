@@ -1,7 +1,7 @@
 <h1 align="center">NFT Market</h1>
-<h3 align="center">202169040009_TI 4A 2021_Universitas Yudharta Pasuruan </h3>
+<h3 align="center">202169040009_Faishal Ananta Ridha_TI 4A 2021_Universitas Yudharta Pasuruan</h3>
 
-<!--![NFTMarket Screenshot]()-->
+![NFTMarket Screenshot](https://raw.githubusercontent.com/Isallkun/nftmarket/master/nftmarket.png)
 
 <p align="center">Nft Market is an NFT Website build with Laravel Jetstream and Inertia (Vue JS)</p>
 <div align="center">
