@@ -6,10 +6,10 @@
 <p align="center">Nft Market is an NFT Website build with Laravel Jetstream and Inertia (Vue JS)</p>
 <div align="center">
 
-[![All Contributors](https://img.shields.io/github/contributors/isallkun/crud-laravel)](https://github.com/isallkun/crud-laravel/graphs/contributors)
-![GitHub last commit](https://img.shields.io/github/last-commit/isallkun/crud-laravel.svg)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/isallkun/crud-laravel)
-[![License](https://img.shields.io/github/license/isallkun/crud-laravel.svg)](LICENSE)
+[![All Contributors](https://img.shields.io/github/contributors/isallkun/nftmarket)](https://github.com/isallkun/nftmarket/graphs/contributors)
+![GitHub last commit](https://img.shields.io/github/last-commit/isallkun/nftmarket.svg)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/isallkun/nftmarket)
+[![License](https://img.shields.io/github/license/isallkun/nftmarket.svg)](LICENSE)
 
 </div>
 
